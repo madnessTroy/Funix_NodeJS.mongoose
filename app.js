@@ -3,6 +3,25 @@ const http = require("http");
 const server = http.createServer((req, res) => {
 	console.log(req);
 	// process.exit() -- kết thúc vòng đời của node nếu không có res nào trả đi từ server
+	const url = req.url;
+	if (url === "/") {
+		res.write("<html>");
+		res.write(`
+            <head>
+                <title>Enter message</title>
+            </head>
+        `);
+		res.write(`
+		    <body>
+		        <form method="POST" action="/message">
+		            <input type="text" name="message">
+		            <button type="submit">Send</button>
+		        </form>
+		    </body>
+		`);
+		res.write("</html>");
+		return res.end();
+	}
 
 	// Tạo res cho phía client
 	res.setHeader("Content-Type", "text/html"); // Đặt header cho res (HTML)
