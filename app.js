@@ -1,6 +1,7 @@
 // Core module
 const http = require("http");
 const fs = require("fs"); // file system
+const { builtinModules } = require("module");
 
 const server = http.createServer((req, res) => {
 	console.log(req);
@@ -30,7 +31,15 @@ const server = http.createServer((req, res) => {
 
 	// Path "/message"
 	if (url === "/message" && method === "POST") {
-		fs.writeFileSync("message.txt", "DUMMY"); // tạo 1 file tên "message.txt" có nội dung DUMMY
+		const body = [];
+		req.on("data", (chunk) => {
+			body.push(chunk);
+		});
+		req.on("end", () => {
+			const parsedBody = Buffer.concat(body).toString();
+			const message = parsedBody.split("=")[1];
+			fs.writeFileSync("message.txt", message); // tạo 1 file tên "message.txt" có nội dung DUMMY
+		});
 		res.statusCode = 302; // status found
 		res.setHeader("Location", "/"); // relocate về path "/"
 		return res.end();
