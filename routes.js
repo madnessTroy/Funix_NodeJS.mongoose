@@ -3,6 +3,7 @@ const fs = require("fs"); // file system
 const requestHandler = (req, res) => {
 	const url = req.url;
 	const method = req.method;
+
 	// Path "/"
 	if (url === "/") {
 		res.write("<html>");
@@ -29,11 +30,11 @@ const requestHandler = (req, res) => {
 		req.on("data", (chunk) => {
 			body.push(chunk);
 		});
-		req.on("end", () => {
+		return req.on("end", () => {
 			const parsedBody = Buffer.concat(body).toString();
 			const message = parsedBody.split("=")[1];
 			fs.writeFile("message.txt", message, (err) => {
-				res.statusCode = 302; // status found
+				res.statusCode = 302;
 				res.setHeader("Location", "/"); // relocate về path "/"
 				return res.end();
 			});
