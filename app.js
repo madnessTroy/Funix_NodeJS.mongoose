@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.listen(3000);
 
 // Router
-app.use(adminRoutes);
+app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 
 // Error page
