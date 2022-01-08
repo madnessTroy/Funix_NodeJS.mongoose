@@ -15,3 +15,8 @@ app.listen(3000);
 // Router
 app.use(adminRoutes);
 app.use(shopRoutes);
+
+// Error page
+app.use((req, res, next) => {
+	res.status(404).send("<h1>Page not found</h1>");
+});
