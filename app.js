@@ -3,6 +3,7 @@ const path = require("path");
 // ExpressJS
 const express = require("express");
 const bodyParser = require("body-parser");
+const expressHbs = require("express-handlebars");
 // Router
 const adminData = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
@@ -10,7 +11,10 @@ const shopRoutes = require("./routes/shop");
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
-app.set("view engine", "pug");
+
+// Setting views engine
+app.engine("hbs", expressHbs());
+app.set("view engine", "hbs");
 app.set("views", "views");
 
 // Tạo web server ở port 3000
