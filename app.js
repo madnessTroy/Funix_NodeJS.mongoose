@@ -13,7 +13,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 // Setting views engine
-app.engine("hbs", expressHbs());
+app.engine(
+	"hbs",
+	expressHbs({ layoutsDir: "views/layouts/", defaultLayout: "main-layouts", extname: "hbs" })
+);
 app.set("view engine", "hbs");
 app.set("views", "views");
 
