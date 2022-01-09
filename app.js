@@ -4,17 +4,20 @@ const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 // Router
-const adminRoutes = require("./routes/admin");
+const adminData = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, "public")));
+app.set("view engine", "pug");
+app.set("views", "views");
 
 // Tạo web server ở port 3000
 app.listen(3000);
 
 // Router
-app.use("/admin", adminRoutes);
+app.use("/admin", adminData.routes);
 app.use(shopRoutes);
 
 // Error page
