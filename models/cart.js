@@ -14,9 +14,7 @@ module.exports = class Cart {
 			// Xem trong giỏ hàng đã có mặt hàng đó chưa
 			const existingProductIndex = cart.products.findIndex((prod) => prod.id === id);
 			const existingProduct = cart.products[existingProductIndex];
-
 			let updatedProduct;
-			console.log(existingProduct);
 			// Nếu có rồi thì tăng thêm SL
 			if (existingProduct) {
 				updatedProduct = { ...existingProduct };
