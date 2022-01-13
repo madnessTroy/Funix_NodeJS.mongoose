@@ -1,4 +1,3 @@
-const { response } = require("express");
 const Product = require("../models/product");
 const Cart = require("../models/cart");
 
@@ -31,7 +30,7 @@ exports.getProduct = (req, res, next) => {
 		.catch((err) => {
 			console.log(err);
 		});
-	// Product.findByPk(prodId)
+	// Product.findById(prodId)
 	// 	.then((product) => {
 	// 		res.render("shop/product-detail", {
 	// 			product: product,
