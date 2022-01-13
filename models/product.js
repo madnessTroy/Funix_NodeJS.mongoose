@@ -1,4 +1,3 @@
-const { __esModule } = require("bootstrap");
 const Sequelize = require("sequelize");
 
 const sequelize = require("../util/database");
