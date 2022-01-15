@@ -1,8 +1,16 @@
-const Sequelize = require("sequelize");
+const mongodb = require("mongodb");
+const MongoClient = mongodb.MongoClient;
 
-const sequelize = new Sequelize("node-complete", "root", "Binh3o123.", {
-	dialect: "mysql",
-	host: "localhost",
-});
+const url =
+	"mongodb+srv://admin:admin@funixlab-nodejs.n4ini.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
-module.exports = sequelize;
+const mongoConnect = (callback) => {
+	MongoClient.connect(url)
+		.then((client) => {
+			console.log(client);
+			callback(client);
+		})
+		.catch((err) => console.log(err));
+};
+
+module.exports = mongoConnect;

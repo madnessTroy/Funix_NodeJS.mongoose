@@ -124,6 +124,31 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 //
+exports.postOrder = (req, res, next) => {
+	req.user
+		.getCart()
+		.then((cart) => {
+			return cart.getProducts();
+		})
+		.then((products) => {
+			req.user
+				.createOrder()
+				.then((order) => {
+					return order.addProducts(
+						products.map((product) => {
+							product.orderItem = { quantity: product.cartItem.quantity };
+							return product;
+						})
+					);
+				})
+				.catch((err) => console.log(err));
+		})
+		.then(() => {
+			res.redirect("/order");
+		})
+		.catch((err) => console.log(err));
+};
+
 exports.getOrders = (req, res, next) => {
 	res.render("shop/orders", {
 		path: "/orders",
