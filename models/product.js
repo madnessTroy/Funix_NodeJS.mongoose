@@ -14,13 +14,13 @@ class Product {
 		const db = getDb();
 		let dbOp;
 		if (this._id) {
-			dpOp = db
+			dbOp = db
 				.collection("products")
 				.updateOne({ _id: new mongodb.ObjectId(this._id) }, { $set: this });
 		} else {
-			dpOp = db.collection("products").insertOne(this);
+			dbOp = db.collection("products").insertOne(this);
 		}
-		return dpOp
+		return dbOp
 			.then((result) => {
 				console.log(result);
 			})
