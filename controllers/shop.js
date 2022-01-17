@@ -1,10 +1,9 @@
 const Product = require('../models/product');
 
-// Product controller
-// Products list
 exports.getProducts = (req, res, next) => {
 	Product.find()
 		.then((products) => {
+			console.log(products);
 			res.render('shop/product-list', {
 				prods: products,
 				pageTitle: 'All Products',
@@ -15,7 +14,7 @@ exports.getProducts = (req, res, next) => {
 			console.log(err);
 		});
 };
-// Product detail
+
 exports.getProduct = (req, res, next) => {
 	const prodId = req.params.productId;
 	Product.findById(prodId)
@@ -26,12 +25,9 @@ exports.getProduct = (req, res, next) => {
 				path: '/products',
 			});
 		})
-		.catch((err) => {
-			console.log(err);
-		});
+		.catch((err) => console.log(err));
 };
 
-//
 exports.getIndex = (req, res, next) => {
 	Product.find()
 		.then((products) => {
@@ -46,11 +42,12 @@ exports.getIndex = (req, res, next) => {
 		});
 };
 
-// Cart controller
 exports.getCart = (req, res, next) => {
 	req.user
-		.getCart()
-		.then((products) => {
+		.populate(['cart.items.productId'])
+		.then((user) => {
+			console.log(user.cart.items);
+			const products = user.cart.items;
 			res.render('shop/cart', {
 				path: '/cart',
 				pageTitle: 'Your Cart',
@@ -66,7 +63,8 @@ exports.postCart = (req, res, next) => {
 		.then((product) => {
 			return req.user.addToCart(product);
 		})
-		.then(() => {
+		.then((result) => {
+			console.log(result);
 			res.redirect('/cart');
 		});
 };
@@ -74,14 +72,13 @@ exports.postCart = (req, res, next) => {
 exports.postCartDeleteProduct = (req, res, next) => {
 	const prodId = req.body.productId;
 	req.user
-		.daleteItemFromCart(prodId)
-		.then(() => {
+		.deleteItemFromCart(prodId)
+		.then((result) => {
 			res.redirect('/cart');
 		})
 		.catch((err) => console.log(err));
 };
 
-//
 exports.postOrder = (req, res, next) => {
 	req.user
 		.addOrder()
@@ -100,7 +97,6 @@ exports.getOrders = (req, res, next) => {
 				pageTitle: 'Your Orders',
 				orders: orders,
 			});
-			console.log(orders);
 		})
 		.catch((err) => console.log(err));
 };
