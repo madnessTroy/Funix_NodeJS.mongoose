@@ -10,7 +10,7 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
 const errorController = require('./controllers/error');
-// const User = require('./models/user');
+const User = require('./models/user');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -19,14 +19,14 @@ app.set('views', 'views');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use((req, res, next) => {
-// 	User.findById('61e50654afa1c15a1e780554')
-// 		.then((user) => {
-// 			req.user = new User(user.name, user.email, user.cart, user._id);
-// 			next();
-// 		})
-// 		.catch((err) => console.log(err));
-// });
+app.use((req, res, next) => {
+	User.findById('61e568f50e731ae76370b154')
+		.then((user) => {
+			req.user = new User(user.name, user.email, user.cart, user._id);
+			next();
+		})
+		.catch((err) => console.log(err));
+});
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
@@ -39,6 +39,17 @@ const url =
 mongoose
 	.connect(url)
 	.then(() => {
+		User.findOne().then((user) => {
+			if (!user) {
+				const user = new User({
+					name: 'Toan',
+					email: 'test@go.go',
+					cart: { items: [] },
+				});
+				console.log('From: app.js || Created User!');
+				user.save();
+			}
+		});
 		app.listen(3000);
 	})
 	.catch((err) => console.log(err));
