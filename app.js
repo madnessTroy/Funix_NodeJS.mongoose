@@ -1,19 +1,20 @@
-const path = require('path');
-
+// ExpressJs
 const express = require('express');
+// Mongoose
+const mongoose = require('mongoose');
+// Core
 const bodyParser = require('body-parser');
-
-const errorController = require('./controllers/error');
-
-const app = express();
-const mongoConnect = require('./util/database').mongoConnect;
-const User = require('./models/user');
-
-app.set('view engine', 'ejs');
-app.set('views', 'views');
+const path = require('path');
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
+
+const errorController = require('./controllers/error');
+const User = require('./models/user');
+
+const app = express();
+app.set('view engine', 'ejs');
+app.set('views', 'views');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -32,6 +33,12 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-mongoConnect(() => {
-	app.listen(3000);
-});
+// Mongoose connect
+const url =
+	'mongodb+srv://admin:admin@funixlab-nodejs.n4ini.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+mongoose
+	.connect(url)
+	.then(() => {
+		app.listen(3000);
+	})
+	.catch((err) => console.log(err));
