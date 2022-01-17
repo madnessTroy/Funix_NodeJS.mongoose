@@ -1,6 +1,6 @@
-const mongoose = reqiure('mongoose');
+const mongoose = require('mongoose');
 
-const Schema = mongoose.Schema();
+const Schema = mongoose.Schema;
 
 const productSchema = new Schema({
 	title: {
@@ -20,6 +20,9 @@ const productSchema = new Schema({
 		required: true,
 	},
 });
+
+module.exports = mongoose.model('Product', productSchema);
+
 // const mongodb = require('mongodb');
 
 // class Product {
